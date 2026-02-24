@@ -1,0 +1,28 @@
+{
+  "name": "deepgear",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChetanaR2308/DeepGear.git"
+  },
+  "author": "Chetana Rangu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChetanaR2308/DeepGear/issues"
+  },
+  "homepage": "https://github.com/ChetanaR2308/DeepGear#readme",
+  "description": "DeepGear project backend",
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^9.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}
