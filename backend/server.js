@@ -2,52 +2,41 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 
-// Import models to register them
-import User from "./models/user.js";
-import Machine from "./models/Machine.js";
-import MachineReading from "./models/MachineReading.js";
-import Alert from "./models/Alert.js";
-import MaintenanceLog from "./models/MaintenanceLog.js";
+// Routes
+import authRoutes from "./routes/authRoutes.js";
+import machineRoutes from "./routes/machineRoutes.js";
+import alertRoutes from "./routes/alertRoutes.js";
 
 dotenv.config();
+
+// Connect to MongoDB (Member 1 DB)
+connectDB();
 
 const app = express();
 app.use(express.json());
 
-// Connect to MongoDB
-connectDB();
+// ====================
+// ROUTES
+// ====================
+app.use("/api/auth", authRoutes);
+app.use("/api/machines", machineRoutes);
+app.use("/api/alerts", alertRoutes);
 
-// Root route
+// Test route to check server
 app.get("/", (req, res) => {
-  res.send("API is running...");
+  res.send("DeepGear Member2 Backend Running");
 });
 
-// Test User route
-app.get("/test-user", async (req, res) => {
-  try {
-    const userExists = await User.findOne({ email: "test@example.com" });
-    if (userExists) return res.json({ message: "Test user exists", user: userExists });
-
-    const user = await User.create({ name: "Test", email: "test@example.com", password: "1234" });
-    res.json({ message: "Test user created", user });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+// Example protected route
+// (just to quickly test JWT middleware)
+import protect from "./middleware/authMiddleware.js";
+app.get("/protected-test", protect, (req, res) => {
+  res.json({
+    message: "Access granted to protected route",
+    user: req.user, // Shows user info from token
+  });
 });
 
-// Test Machine route
-app.get("/test-machine", async (req, res) => {
-  try {
-    const machineExists = await Machine.findOne({ machineId: "M001" });
-    if (machineExists) return res.json({ message: "Test machine exists", machine: machineExists });
-
-    const machine = await Machine.create({ machineId: "M001", type: "Lathe" });
-    res.json({ message: "Test machine created", machine });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Start server
-const PORT = process.env.PORT || 5000;
+// PORT (different from Member 1 to avoid conflict)
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
