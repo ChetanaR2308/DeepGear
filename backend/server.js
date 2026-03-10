@@ -6,7 +6,7 @@ import authRoutes from "./routes/authRoutes.js";
 import machineRoutes from "./routes/machineRoutes.js";
 import alertRoutes from "./routes/alertRoutes.js";
 import machineReadingRoutes from "./routes/machineReadingRoutes.js";
-
+import maintenanceRoutes from "./routes/maintenanceRoutes.js";
 import protect from "./middleware/authMiddleware.js";
 
 dotenv.config();
@@ -24,7 +24,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/machines", machineRoutes);
 app.use("/api/alerts", alertRoutes);
 app.use("/api/readings", machineReadingRoutes);
-
+app.use("/api/maintenance", maintenanceRoutes);
 // Root route
 app.get("/", (req, res) => {
   res.send("DeepGear Backend Running");
