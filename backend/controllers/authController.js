@@ -16,7 +16,7 @@ export const registerUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role: role || "technician",
+      role: role || "User",
     });
 
     res.status(201).json({ message: "User registered successfully", user });
@@ -42,7 +42,16 @@ export const loginUser = async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    res.json({ message: "Login successful", token });
+    res.json({
+      message: "Login successful",
+      token,
+      user: {
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
