@@ -6,6 +6,8 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import machineRoutes from "./routes/machineRoutes.js";
 import alertRoutes from "./routes/alertRoutes.js";
+import cors from "cors";
+
 
 dotenv.config();
 
@@ -13,6 +15,7 @@ dotenv.config();
 connectDB();
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 // ====================
