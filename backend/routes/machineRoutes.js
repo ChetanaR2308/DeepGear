@@ -3,7 +3,7 @@ import {
   createMachine,
   updateMachine,
   deleteMachine,
-  getMachines,
+  getAllMachines,
   getMachineById
 } from "../controllers/machineController.js";
 
@@ -12,13 +12,13 @@ import authorizeRoles from "../middleware/roleMiddleware.js";
 
 const router = express.Router();
 
-// Admin-only
+// Admin-only routes
 router.post("/", protect, authorizeRoles("admin"), createMachine);
 router.put("/:id", protect, authorizeRoles("admin"), updateMachine);
 router.delete("/:id", protect, authorizeRoles("admin"), deleteMachine);
 
 // Admin + Technician
-router.get("/", protect, authorizeRoles("admin", "technician"), getMachines);
+router.get("/", protect, authorizeRoles("admin", "technician"), getAllMachines);
 router.get("/:id", protect, authorizeRoles("admin", "technician"), getMachineById);
 
 export default router;

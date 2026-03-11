@@ -1,52 +1,71 @@
 import Machine from "../models/Machine.js";
 
-// CREATE
-export const createMachine = async (req, res) => {
+export const createMachine = async (req, res) => {//Creates and stores a new machine record in the database using the request data.
   try {
-    const machine = await Machine.create(req.body);
-    res.status(201).json({ message: "Machine created", machine });
+    const { machineId, type, location, status } = req.body;
+
+    const machine = await Machine.create({
+      machineId,
+      type,
+      location,
+      status,
+    });
+
+    res.status(201).json(machine);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
-
-// UPDATE
-export const updateMachine = async (req, res) => {
-  try {
-    const machine = await Machine.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    res.json({ message: "Machine updated", machine });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-// DELETE
-export const deleteMachine = async (req, res) => {
-  try {
-    await Machine.findByIdAndDelete(req.params.id);
-    res.json({ message: "Machine deleted" });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-// GET ALL
-export const getMachines = async (req, res) => {
+export const getAllMachines = async (req, res) => {//Retrieves and returns all machine records from the database.
   try {
     const machines = await Machine.find();
-    res.json(machines);
+    res.status(200).json(machines);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
-
-// GET BY ID
-export const getMachineById = async (req, res) => {
+export const getMachineById = async (req, res) => {//Fetches and returns a single machine based on its unique ID.
   try {
     const machine = await Machine.findById(req.params.id);
-    if (!machine) return res.status(404).json({ message: "Machine not found" });
-    res.json(machine);
+
+    if (!machine) {
+      return res.status(404).json({ message: "Machine not found" });
+    }
+
+    res.status(200).json(machine);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
+  }
+};
+export const updateMachine = async (req, res) => {//Updates the details of an existing machine identified by its ID.
+  try {
+    const { machineId, type, location, status } = req.body;
+
+    const machine = await Machine.findByIdAndUpdate(
+      req.params.id,
+      { machineId, type, location, status },
+      { new: true, runValidators: true }
+    );
+
+    if (!machine) {
+      return res.status(404).json({ message: "Machine not found" });
+    }
+
+    res.status(200).json(machine);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+export const deleteMachine = async (req, res) => {//Deletes a machine record from the database using its ID.
+  try {
+    const machine = await Machine.findByIdAndDelete(req.params.id);
+
+    if (!machine) {
+      return res.status(404).json({ message: "Machine not found" });
+    }
+
+    res.status(200).json({ message: "Machine deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
