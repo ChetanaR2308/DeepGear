@@ -6,6 +6,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import machineRoutes from "./routes/machineRoutes.js";
 import alertRoutes from "./routes/alertRoutes.js";
+import readingRoutes from "./routes/readingRoutes.js";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/machines", machineRoutes);
 app.use("/api/alerts", alertRoutes);
+app.use("/api/readings", readingRoutes);
 
 // Test route to check server
 app.get("/", (req, res) => {

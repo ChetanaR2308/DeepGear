@@ -1,11 +1,17 @@
 import express from "express";
-import { getAlerts, createAlert } from "../controllers/alertController.js";
+import { getAlerts, createAlert, getMachineAlerts } from "../controllers/alertController.js";
 import protect from "../middleware/authMiddleware.js";
 import authorizeRoles from "../middleware/roleMiddleware.js";
 
 const router = express.Router();
 
+// Get all alerts
 router.get("/", protect, authorizeRoles("admin", "technician"), getAlerts);
+
+// Create alert
 router.post("/", protect, authorizeRoles("admin"), createAlert);
 
+// Get alerts for a specific machine
+router.get("/machine/:machineId",protect,authorizeRoles("admin", "technician"),
+  getMachineAlerts);
 export default router;

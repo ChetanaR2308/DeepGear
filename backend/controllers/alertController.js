@@ -19,3 +19,18 @@ export const createAlert = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+export const getMachineAlerts = async (req, res) => {
+
+  try {
+
+    const alerts = await Alert.find({
+      machineId: req.params.machineId
+    });
+
+    res.json(alerts);
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+
+};
