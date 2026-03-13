@@ -4,7 +4,9 @@ import {
   updateMachine,
   deleteMachine,
   getAllMachines,
-  getMachineById
+  getMachineById,
+  getLatestReading,
+  getMachineHealth
 } from "../controllers/machineController.js";
 
 import protect from "../middleware/authMiddleware.js";
@@ -20,5 +22,6 @@ router.delete("/:id", protect, authorizeRoles("admin"), deleteMachine);
 // Admin + Technician
 router.get("/", protect, authorizeRoles("admin", "technician"), getAllMachines);
 router.get("/:id", protect, authorizeRoles("admin", "technician"), getMachineById);
-
+router.get("/:id/latest-reading", getLatestReading);
+router.get("/:id/health", getMachineHealth);
 export default router;

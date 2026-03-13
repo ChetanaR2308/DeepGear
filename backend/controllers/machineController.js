@@ -69,3 +69,43 @@ export const deleteMachine = async (req, res) => {//Deletes a machine record fro
     res.status(500).json({ message: error.message });
   }
 };
+
+import MachineReading from "../models/MachineReading.js";
+
+export const getLatestReading = async (req, res) => {
+  try {
+    const reading = await MachineReading
+      .findOne({ machineId: req.params.id })
+      .sort({ createdAt: -1 });
+
+    res.json(reading);
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+import Alert from "../models/Alert.js";
+
+export const getMachineHealth = async (req, res) => {
+  try {
+    const alertCount = await Alert.countDocuments({
+      machineId: req.params.id,
+      resolved: false
+    });
+
+    let status = "healthy";
+
+    if (alertCount > 3) status = "critical";
+    else if (alertCount > 1) status = "warning";
+
+    res.json({
+      machineId: req.params.id,
+      status,
+      alertCount
+    });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

@@ -33,3 +33,15 @@ export const getReadings = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const getReadingsByMachine = async (req, res) => {
+  try {
+    const readings = await MachineReading
+      .find({ machineId: req.params.machineId })
+      .sort({ createdAt: -1 });
+
+    res.json(readings);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
