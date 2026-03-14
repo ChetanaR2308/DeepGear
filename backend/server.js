@@ -3,11 +3,12 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 
 // Import models to register them
-import User from "./models/user.js";
+import User from "./models/User.js";
 import Machine from "./models/Machine.js";
 import MachineReading from "./models/MachineReading.js";
 import Alert from "./models/Alert.js";
 import MaintenanceLog from "./models/MaintenanceLog.js";
+import { getDashboardStats } from "./utils/dashboardStats.js";
 
 dotenv.config();
 
@@ -46,6 +47,23 @@ app.get("/test-machine", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+
+app.get("/dashboard", async (req, res) => {
+
+  try {
+
+    const stats = await getDashboardStats();
+
+    res.json(stats);
+
+  } catch (error) {
+
+    res.status(500).json({ message: error.message });
+
+  }
+
 });
 
 // Start server
