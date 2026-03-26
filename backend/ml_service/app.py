@@ -15,8 +15,11 @@ def preprocess(readings):
     for r in readings:
         sequence.append([
             r["temperature"],
+            r["pressure"],
             r["vibration"],
-            r["pressure"]
+            r["rpm"],
+            r["power"],
+            r["speed"]
         ])
 
     return np.array([sequence])
