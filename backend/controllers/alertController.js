@@ -34,3 +34,22 @@ export const getMachineAlerts = async (req, res) => {
   }
 
 };
+
+export const resolveAlert = async (req, res) => {
+  try {
+    const alert = await Alert.findByIdAndUpdate(
+      req.params.id,
+      { resolved: true },
+      { new: true }
+    );
+
+    if (!alert) {
+      return res.status(404).json({ message: "Alert not found" });
+    }
+
+    res.json({ message: "Alert resolved", alert });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

@@ -7,10 +7,10 @@ export const createReading = async (req, res) => {
     const reading = await MachineReading.create(req.body);
 
     // ALERT AUTOMATION
-    const alert = await checkAndCreateAlert(reading);
+    const alerts = await checkAndCreateAlert(reading);
 
-     // 🔹 FIX: update alertFlag if alert created
-    if (alert) {
+    // ✅ FIX: handle multiple alerts
+    if (alerts && alerts.length > 0) {
       reading.alertFlag = true;
       await reading.save();
     }
@@ -18,7 +18,7 @@ export const createReading = async (req, res) => {
     res.status(201).json({
       message: "Reading saved",
       reading,
-      alertGenerated: alert ? true : false
+      alertGenerated: alerts && alerts.length > 0
     });
 
   } catch (error) {
